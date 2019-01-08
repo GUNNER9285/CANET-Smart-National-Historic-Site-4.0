@@ -33,12 +33,37 @@ app.post('/addUser', function (req, res) {
     var json = req.body;
     fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
         data = JSON.parse( data );
-        data["user4"] = req.body;
+        data["user4"] = json;
         console.log( data );
         res.end( JSON.stringify(data));
     });
 })
+// get user by id
+app.get('/:id', function (req, res) {
+    // First read existing users.
+    fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
+        var users = JSON.parse( data );
+        var user = users["user" + req.params.id]
+        console.log( user );
+        res.end( JSON.stringify(user));
+    });
+})
 
+// delete user
+var id = 2;
+
+//app.delete('/deleteUser', function (req, res) {
+app.delete('/delete/:id', function (req, res) {
+    // First read existing users.
+    fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
+        data = JSON.parse( data );
+        delete data["user" + 2];
+        //delete data["user" + req.params.id];
+
+        console.log( data );
+        res.end( JSON.stringify(data));
+    });
+})
 
 var server = app.listen(3000, function () {
     var port = server.address().port;
